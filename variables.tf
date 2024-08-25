@@ -3,21 +3,25 @@ variable "GOOGLE_PROJECT" {
   description = "Google project"
 }
 
-variable "REGION" {
+variable "GOOGLE_REGION" {
   type        = string
 #  default     = "us-central1-a"
   description = "GCP region name"
 }
 
-variable "GKE_NUM_NODES" {
+variable "GKE_NAME" {
   type        = string
-  description = "Initial number of nodes"
+  description = "GKE cluster name"
+}
+
+variable "GKE_NUM_NODES" {
+  type        = number
+  description = "Initial number of GKE cluster nodes"
 
 }
 
 variable "GKE_MACHINE_TYPE" {
   type        = string
 #  default     = "e2-micro"
-  description = "Machine type"
-
+  description = "GKE VM types"
 }

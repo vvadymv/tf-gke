@@ -5,30 +5,21 @@ terraform {
       version = "5.42.0"
     }
   }
+  backend "gcs" {
+    bucket = "m7-devops-tfstate"
+    prefix = var.GKE_NAME
+  }
 }
 
 provider "google" {
   project = var.GOOGLE_PROJECT
-  region  = var.REGION
+  region  = var.GOOGLE_REGION
 }
 
-resource "google_container_cluster" "demo" {
-  name     = "demo-cluster"
-  location = var.REGION
-
-  remove_default_node_pool = true
-  initial_node_count       = 1
-}
-
-resource "google_container_node_pool" "main" {
-  name       = "main"
-  project    = google_container_cluster.demo.project
-  cluster    = google_container_cluster.demo.name
-  location   = google_container_cluster.demo.location
-  node_count = var.GKE_NUM_NODES
-
-  node_config {
-    machine_type = var.GKE_MACHINE_TYPE
-    disk_size_gb = 50
-  }
+module "gke_cluster" {
+  source         = "github.com/vvadymv/tf-google-gke-cluster"
+  GOOGLE_REGION  = var.GOOGLE_REGION
+  GKE_NAME = var.GKE_NAME
+  GKE_NUM_NODES  = var.GKE_NUM_NODES
+  GKE_MACHINE_TYPE = var.GKE_MACHINE_TYPE
 }
