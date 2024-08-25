@@ -7,7 +7,7 @@ terraform {
   }
   backend "gcs" {
     bucket = "m7-devops-tfstate"
-    prefix = var.GKE_NAME
+    prefix = "tf-init"
   }
 }
 
